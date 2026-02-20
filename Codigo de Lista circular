@@ -1,0 +1,105 @@
+# -----------------------------
+# Definición del Nodo
+# -----------------------------
+class Nodo:
+    def __init__(self, dato):
+        self.dato = dato
+        self.siguiente = None
+
+
+# -----------------------------
+# Definición de la Lista Circular
+# -----------------------------
+class ListaCircular:
+    def __init__(self):
+        self.cabeza = None
+
+    # Inserción al final
+    def insertar(self, dato):
+        nuevo = Nodo(dato)
+
+        if self.cabeza is None:
+            self.cabeza = nuevo
+            nuevo.siguiente = self.cabeza
+        else:
+            actual = self.cabeza
+            while actual.siguiente != self.cabeza:
+                actual = actual.siguiente
+
+            actual.siguiente = nuevo
+            nuevo.siguiente = self.cabeza
+
+    # Recorrido
+    def recorrer(self):
+        if self.cabeza is None:
+            print("Lista vacía")
+            return
+
+        actual = self.cabeza
+        while True:
+            print(actual.dato, end=" → ")
+            actual = actual.siguiente
+            if actual == self.cabeza:
+                break
+        print("(regresa al inicio)")
+
+    # Eliminación por valor
+    def eliminar(self, dato):
+        if self.cabeza is None:
+            print("Lista vacía")
+            return
+
+        actual = self.cabeza
+        anterior = None
+
+        # Caso: eliminar la cabeza
+        if actual.dato == dato:
+            if actual.siguiente == self.cabeza:
+                self.cabeza = None
+                return
+
+            ultimo = self.cabeza
+            while ultimo.siguiente != self.cabeza:
+                ultimo = ultimo.siguiente
+
+            self.cabeza = actual.siguiente
+            ultimo.siguiente = self.cabeza
+            return
+
+        # Caso general
+        while actual.siguiente != self.cabeza:
+            anterior = actual
+            actual = actual.siguiente
+            if actual.dato == dato:
+                anterior.siguiente = actual.siguiente
+                return
+
+        print("Elemento no encontrado")
+
+
+# -----------------------------
+# Programa principal para probar
+# -----------------------------
+if __name__ == "__main__":
+    lista = ListaCircular()
+
+    print("Insertando elementos...")
+    lista.insertar(10)
+    lista.insertar(20)
+    lista.insertar(30)
+    lista.insertar(40)
+
+    print("\nLista actual:")
+    lista.recorrer()
+
+    print("\nEliminando 20...")
+    lista.eliminar(20)
+    lista.recorrer()
+
+    print("\nEliminando 10 (cabeza)...")
+    lista.eliminar(10)
+    lista.recorrer()
+
+    print("\nEliminando 40...")
+    lista.eliminar(40)
+    lista.recorrer()
